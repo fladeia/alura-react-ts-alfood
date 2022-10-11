@@ -8,7 +8,9 @@ import Restaurante from './Restaurante';
 const ListaRestaurantes = () => {
   const restauratsUrl = 'http://localhost:8000/api/v1/restaurantes/'
   const [restaurantes, setRestaurantes] = useState<IRestaurante[]>([])
+  // const [nextPage, setNextPage] = useState('')
   const [nextPage, setNextPage] = useState('')
+  const [prevPage, setPrevPage] = useState('')
 
   // const restaurantes: IRestaurante[] = [
   //   {
@@ -95,29 +97,25 @@ const ListaRestaurantes = () => {
   //   }
   // ]
 
-  useEffect(() => {
-    axios.get<iPaginacao<IRestaurante>>(restauratsUrl)
+  function seeMore(url: string) {
+    axios.get<iPaginacao<IRestaurante>>(url)
       .then(response => {
         setRestaurantes(response.data.results)
         setNextPage(response.data.next)
-      })
-      .catch(err => console.log(err))
-
-  }, [])
-
-  function seeMore() {
-    axios.get<iPaginacao<IRestaurante>>(nextPage)
-      .then(response => {
-        setRestaurantes([...restaurantes, ...response.data.results])
-        setNextPage(response.data.next)
+        setPrevPage(response.data.previous)
       })
       .catch(err => console.log(err))
   }
 
+  useEffect(() => {
+    seeMore(restauratsUrl)
+  }, [])
+
   return (<section className={style.ListaRestaurantes}>
     <h1>Os restaurantes mais <em>bacanas</em>!</h1>
     {restaurantes?.map(item => <Restaurante restaurante={item} key={item.id} />)}
-    {nextPage && <button onClick={seeMore}>Ver mais</button>}
+    <button onClick={() => seeMore(nextPage)} disabled={!nextPage}>Próxima</button>
+    <button onClick={() => seeMore(prevPage)} disabled={!prevPage}>Anterior</button>
   </section>)
 }
 

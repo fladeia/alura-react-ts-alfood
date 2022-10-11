@@ -9,6 +9,7 @@ export function AdminRestaurants() {
   useEffect(() => {
     axios.get('http://localhost:8000/api/v2/restaurantes/')
       .then(response => setRestaurants(response.data))
+      .catch(err => console.log(err))
   }, [])
 
   return (

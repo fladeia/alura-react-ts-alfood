@@ -11,6 +11,7 @@ export function AdminRestaurantNew() {
       nome: newRestaurant
     })
       .then(response => alert('Cadastrado com sucesso!'))
+      .catch(err => console.log(err))
   }
 
   return (

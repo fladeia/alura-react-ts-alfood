@@ -1,7 +1,7 @@
-import { Button, TextField } from "@mui/material";
-import axios from "axios";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { http } from "../../../http";
 import IRestaurante from "../../../interfaces/IRestaurante";
 
 export function AdminRestaurantNew() {
@@ -10,7 +10,7 @@ export function AdminRestaurantNew() {
 
   useEffect(() => {
     if (params.id) {
-      axios.get<IRestaurante>(`http://localhost:8000/api/v2/restaurantes/${params.id}/`)
+      http.get<IRestaurante>(`restaurantes/${params.id}/`)
         .then(response => setNewRestaurant(response.data.nome))
     }
   }, [params])
@@ -19,13 +19,13 @@ export function AdminRestaurantNew() {
     event.preventDefault()
 
     if (params.id) {
-      axios.put(`http://localhost:8000/api/v2/restaurantes/${params.id}/`, {
+      http.put(`restaurantes/${params.id}/`, {
         nome: newRestaurant
       })
         .then(response => alert('Atualizado com sucesso!'))
         .catch(err => console.log(err))
     } else {
-      axios.post('http://localhost:8000/api/v2/restaurantes/', {
+      http.post('restaurantes/', {
         nome: newRestaurant
       })
         .then(response => alert('Cadastrado com sucesso!'))
@@ -35,20 +35,27 @@ export function AdminRestaurantNew() {
   }
 
   return (
-    <form onSubmit={submitForm}>
-      <TextField
-        id="standard-basic"
-        label="Standard"
-        variant="standard"
-        value={newRestaurant}
-        onChange={event => setNewRestaurant(event.target.value)}
-      />
-      <Button
-        type="submit"
-        variant="contained"
-      >
-        Enviar
-      </Button>
-    </form>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography component='h1' variant='h6' >Formulário de Restaurantes</Typography>
+      <Box component='form' onSubmit={submitForm}>
+        <TextField
+          id="standard-basic"
+          label="Standard"
+          variant="standard"
+          value={newRestaurant}
+          onChange={event => setNewRestaurant(event.target.value)}
+          fullWidth
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ marginTop: 1 }}
+          fullWidth
+        >
+          Enviar
+        </Button>
+      </Box>
+    </Box>
   )
 }

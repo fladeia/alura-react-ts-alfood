@@ -37,7 +37,7 @@ export function AdminRestaurantNew() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Typography component='h1' variant='h6' >Formulário de Restaurantes</Typography>
-      <Box component='form' onSubmit={submitForm}>
+      <Box component='form' sx={{ width: '100%' }} onSubmit={submitForm}>
         <TextField
           id="standard-basic"
           label="Standard"
@@ -53,7 +53,7 @@ export function AdminRestaurantNew() {
           sx={{ marginTop: 1 }}
           fullWidth
         >
-          Enviar
+          Salvar
         </Button>
       </Box>
     </Box>
